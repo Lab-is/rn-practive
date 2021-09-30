@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import { 
   SafeAreaView, 
   StyleSheet, 
@@ -14,15 +14,33 @@ const App = () => {
   //todos: {id: Number, textValue: string, checked: boolean }
   const [todos, setTodos] = useState([]);
 
-  const addTodo = text => { 
+  const nextID=useRef(1);
+
+
+  const addTodo = useCallback(text => { 
     //사용자가 입력한 텍스트를 인자로 새로운todo 생성
+    const todo = {
+      id: nextID.current, 
+      textValue: text, 
+      checked: false
+      //id: 현재 아이디 불러오고 뒤에 거기다 +1, checked: false 기본
+      //기존 할 일 목록은 todo를 이용해서 그대로 가지고옴
+    };
+
+    setTodos(todos.concat(todo));
+    nextID.current +=1; //nextID 하나씩 더하기
+    /*
     setTodos([
         ...todos,
-        {id: Math.random().toString(), textValue: text, checked: false},
-        //id: 랜덤부여, checked: false 기본
-        //기존 할 일 목록은 todo를 이용해서 그대로 가지고옴
+        {id: Math.random().toString(), textValue: text, checked: false}, ///
+        
     ]);
-  };
+    */
+   },
+   [todos],
+  );
+  
+
 
   // onRemove 함수: setTodos를 사용하여 상태를 업데이트
   // 각 아이템의 고유 id를 받아와서 해당 아이디를 가진 
@@ -40,6 +58,7 @@ const App = () => {
       ),
     );
   };
+
 
   //여기서 앱에 나타남  
   //바로 아래 style에서 각 양식과 관련된 함수? 상수들 찾아서 불러옴.

@@ -2,8 +2,8 @@
 //추가된 아이템 하나를 나타내는 부분
 //아이템 완료 여부 상태값, 완료 체크 이벤트
 //삭제 이벤트 기능
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 //import Icon from 'react-native-vector-icons/AntDesign';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -22,6 +22,30 @@ const TodoListItem = ({textValue, id, checked, onRemove, onToggle}) => {
    //그리고 text style을 buttonText로 했고 아래 buttonText는 써주지도 않았는데 어떻게 이게 작동하는거지?
    // case? 사용하기:  
    //<TouchableOpacity onPressOut={ontoggle(id)}> {checked ? (o~~) : (x~~~)}
+
+    /*
+        <Text style={[
+            styles.text, 
+            checked ? styles.strikeText : styles.unstrikeText,
+        ]}> 
+            {textValue}
+        </Text>
+    */
+
+    /*
+    <TextInput style={[
+        styles.text, 
+        checked ? styles.strikeText : styles.unstrikeText,
+    ]}> 
+        {textValue}
+        onChangeText={(newValue)=>setText(newValue)}
+    </TextInput>
+    */
+
+    const [textt, setText] = useState('');  ///
+    // textt= textValue; //얘 에러남. (textt: read only)
+    // setText(textValue); //이것도 rerender 한다고 안됨ㅠㅠ
+
    return (
         <View style={styles.container}>
             <TouchableOpacity onPressOut={onToggle(id)}>
@@ -34,13 +58,15 @@ const TodoListItem = ({textValue, id, checked, onRemove, onToggle}) => {
                 )}
             </TouchableOpacity>
 
-
-            <Text style={[
+            <TextInput style={[
                 styles.text, 
                 checked ? styles.strikeText : styles.unstrikeText,
-            ]}> 
-                {textValue}
-            </Text>
+            ]}
+            value = {textt}
+            onChangeText={(textt)=>setText(textt)}
+            /> 
+                
+
             <TouchableOpacity style={styles.buttonContainer}>
                 <Text style={styles.buttonText} onPress={onRemove(id)}>
                     <AntDesign name="delete" size={30} color="#e33057" />
