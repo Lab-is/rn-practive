@@ -42,9 +42,18 @@ const TodoListItem = ({textValue, id, checked, onRemove, onToggle}) => {
     </TextInput>
     */
 
-    const [textt, setText] = useState('');  ///
+    const [textt, setText] = useState(textValue);  ///이렇게 해야지 초기 textt에 textValue값을 넣어주면서도 에러 안 남!
     // textt= textValue; //얘 에러남. (textt: read only)
-    // setText(textValue); //이것도 rerender 한다고 안됨ㅠㅠ
+    /* 
+    <TextInput style={[
+        styles.text, 
+        checked ? styles.strikeText : styles.unstrikeText,
+    ]}
+    value = {textt}
+    onChangeText={(newText)=>setText(newText)}  //이러면 text를 사용자가 수정할 수 잇음
+    /> 
+    */
+        
 
    return (
         <View style={styles.container}>
@@ -63,7 +72,7 @@ const TodoListItem = ({textValue, id, checked, onRemove, onToggle}) => {
                 checked ? styles.strikeText : styles.unstrikeText,
             ]}
             value = {textt}
-            onChangeText={(textt)=>setText(textt)}
+            onChangeText={(newText)=>setText(newText)}
             /> 
                 
 
